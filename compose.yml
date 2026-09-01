@@ -1,6 +1,11 @@
 services:
   eval:
     build: .
+    # Set a provider key in .env to run in LLM mode; with no key the eval runs
+    # in the deterministic offline mode that produced the numbers in the PR.
     env_file:
       - path: .env
         required: false
+    environment:
+      - HOLLOW_OFFLINE=${HOLLOW_OFFLINE:-0}
+      - TOOL_FAILURE_RATE=${TOOL_FAILURE_RATE:-0}

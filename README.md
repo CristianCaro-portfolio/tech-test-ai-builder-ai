@@ -118,6 +118,22 @@ How you used AI coding tools during this assessment:
 
 ---
 
+## Running the submission
+
+```bash
+python3 eval/run_eval.py --pipeline baseline      # starting point
+python3 eval/run_eval.py --pipeline hollow        # improved pipeline, offline and deterministic
+python3 -m unittest discover -s tests             # redaction, tool failure, refusal, state
+docker compose up                                 # tests + both evals in a container
+```
+
+No dependencies beyond the standard library. Set one provider key in `.env` (see `.env.example`)
+to switch synthesis to an LLM with function calling; `TOOL_FAILURE_RATE=0.5` makes the simulated
+deployment API flaky to watch the retry path. Layout: `hollow/chunking.py` (section and table-row
+chunks), `hollow/retrieval.py` (BM25 with a relevance gate), `hollow/redaction.py` (Restricted data
+never enters the index), `hollow/tools.py` (patch status, refund arithmetic, retries),
+`hollow/agent.py` (the loop). See `DECISIONS.md`, `STACK.md`, `AI_WORKFLOW.md`.
+
 ## Stack
 
 **Your choice of language.** Python, Node/TypeScript, Go — whatever you ship fastest in. The
